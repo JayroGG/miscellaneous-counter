@@ -9,9 +9,14 @@ const Form = () => {
   const navigate = useNavigate()
 
   const handleSubmit = async () => {
-    console.log({ name, value })
+    let key = name.trim()
+    if (key === '') key = 'Unknown'
+    let val = value.trim()
+    if (val === '') val = '0'
+
+    console.log({ key, val })
     try {
-      await AsyncStorage.setItem(name, value)
+      await AsyncStorage.setItem(key, val)
       navigate('/')
     } catch (error) {
       console.error({ message: error })

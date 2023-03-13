@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native'
 import CounterDisplay from './CounterDisplay'
 import CounterBotom from './CounterBottom'
 
-const Counter = ({ counterName, value = 0 } = {}) => {
+const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
   const [count, setCount] = useState(JSON.parse(value))
 
   if (count === null) {

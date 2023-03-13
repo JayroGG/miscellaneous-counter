@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native'
 import StyledButton from './StyledButton'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const CounterDisplay = ({ counterName, func, count}) => {
+const CounterDisplay = ({ counterName, func, count }) => {
   const add = () => {
     const newCount = count + 1
     AsyncStorage.setItem(counterName, JSON.stringify(newCount))
