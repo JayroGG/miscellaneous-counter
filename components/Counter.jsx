@@ -11,7 +11,7 @@ const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
   }
 
   return (<View style={styles.container}>
-    <View style={{ alignItems: 'center', marginTop: 20 }}>
+    <View style={{ alignItems: 'center', marginVertical: 20 }}>
       <Text style={styles.title}>{counterName.toUpperCase()}</Text>
     </View>
     <CounterDisplay counterName={counterName} count={count} func={setCount}/>
