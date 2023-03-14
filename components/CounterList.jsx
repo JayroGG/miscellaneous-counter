@@ -22,11 +22,11 @@ const CounterList = () => {
       renderItem={({ item: counter }) => {
         const name = counter[0]
         return (
-            <Counter
-              key={name}
-              counterName={name}
-              value={counter[1]}
-            />
+          <Counter
+            key={name}
+            counterName={name}
+            value={counter[1]}
+          />
         )
       }}
     />

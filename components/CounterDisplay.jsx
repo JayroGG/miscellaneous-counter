@@ -37,7 +37,18 @@ const CounterDisplay = ({ counterName, func, count }) => {
       .then(func(newCount))
       .catch(err => console.log(err))
   }
-
+  const reset = () => {
+    Vibration.vibrate(10)
+    AsyncStorage.setItem(counterName, JSON.stringify(0))
+      .then(func(0))
+      .catch(err => console.log(err))
+  }
+  const remove = () => {
+    Vibration.vibrate(10)
+    AsyncStorage.removeItem(counterName)
+      .then(() => func(null))
+      .catch(err => console.log(err))
+  }
   const eventHandler = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.startX = x.value
@@ -46,6 +57,11 @@ const CounterDisplay = ({ counterName, func, count }) => {
     onActive: (event, ctx) => {
       x.value = event.translationX
       y.value = event.translationY
+      if (x.value > 100) {
+        runOnJS(add)()
+      } else if (x.value < -100) {
+        runOnJS(less)()
+      }
     },
     onEnd: (event, ctx) => {
       x.value = withSpring(startingPosition)
@@ -55,8 +71,14 @@ const CounterDisplay = ({ counterName, func, count }) => {
       console.log(y.value)
       if (x.value > 0) {
         runOnJS(add)()
-      } else if ( x.value < 0) {
+      } else if (x.value < 0) {
         runOnJS(less)()
+      }
+      if (y.value < -100) {
+        runOnJS(reset)()
+      }
+      if (y.value > 100) {
+        runOnJS(remove)()
       }
     }
   })
@@ -71,7 +93,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
 
 const styles = StyleSheet.create({
   animatedContainer: {
-    flex: 1, 
+    flex: 1,
     alignItems: 'center'
   },
   countContainer: {
@@ -81,7 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     color: '#fff',
     backgroundColor: '#0049FF',
-    fontSize: 150,
+    fontSize: 100,
     borderRadius: 40
   }
 })

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import CounterDisplay from './CounterDisplay'
-import CounterBotom from './CounterBottom'
 
 const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
   const [count, setCount] = useState(JSON.parse(value))
@@ -11,13 +10,11 @@ const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
   }
 
   return (<>
-    <View style={{ alignItems: 'center', marginVertical: 20 }}>
+    <View style={{ alignItems: 'center', marginVertical: 40 }}>
       <Text style={styles.title}>{counterName.toUpperCase()}</Text>
     </View>
     <CounterDisplay counterName={counterName} count={count} func={setCount} />
-    <CounterBotom counterName={counterName} func={setCount} />
   </>
-
   )
 }
 
