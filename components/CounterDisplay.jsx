@@ -1,38 +1,23 @@
 import React from 'react'
-import { Text, View, StyleSheet, Vibration } from 'react-native'
-import StyledButton from './StyledButton'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Text, View, StyleSheet } from 'react-native'
 
-const CounterDisplay = ({ counterName, func, count }) => {
-  const add = () => {
-    Vibration.vibrate(10)
-    const newCount = count + 1
-    AsyncStorage.setItem(counterName, JSON.stringify(newCount))
-      .then(func(newCount))
-      .catch(err => console.log(err))
-  }
-  const less = () => {
-    Vibration.vibrate(10)
-    const newCount = count === 0 ? 0 : count - 1
-    AsyncStorage.setItem(counterName, JSON.stringify(newCount))
-      .then(func(newCount))
-      .catch(err => console.log(err))
-  }
+const CounterDisplay = ({ count }) => {
+  
   return <View style={styles.countContainer}>
-    <StyledButton mode='less' onPress={less} />
-    <Text style={styles.counterDisplay}>{count}</Text>
-    <StyledButton mode='add' onPress={add} />
+        <Text style={styles.counterDisplay}>{count}</Text>
   </View>
 }
 
 const styles = StyleSheet.create({
   countContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingBottom: 10
   },
   counterDisplay: {
-    fontSize: 50
+    paddingHorizontal: 20,
+    color: '#fff',
+    backgroundColor: '#004972',
+    fontSize: 150,
+    borderRadius: 40
   }
 })
 
