@@ -25,14 +25,14 @@ const Form = () => {
   }
 
   return <View style={styles.container}>
-    <Text>Name</Text>
+    <Text style={styles.labelText}>Name</Text>
     <TextInput
       style={styles.input}
       onChangeText={setName}
       placeholder='Name the thing'
       value={name}
     />
-    <Text>How Many</Text>
+    <Text style={styles.labelText}>How Many</Text>
     <TextInput
       style={styles.input}
       onChangeText={setValue}
@@ -58,20 +58,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   input: {
     fontSize: 30,
-    marginBottom: 100
+    marginBottom: 100,
   },
   options: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   text: {
     textAlign: 'center', 
     fontSize: 30, 
-    color: '#fff'
-  }
+    color: '#fff',
+  },
+  labelText: {
+    textAlign: 'center', 
+    fontSize: 30, 
+    marginBottom: 30
+  },
 })
 
 export default Form
