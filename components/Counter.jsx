@@ -22,9 +22,10 @@ const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
 
 const styles = StyleSheet.create({
   container: {
-    fex: 1, 
+    flex: 1, 
     padding: 20, 
-    minHeight: 400,
+    minHeight: 370,
+    minWidth: 421,
   },
   titleContainer: { 
     alignItems: 'center',
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingVertical: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#09848c',
+    backgroundColor: 'rgba(0, 0, 0, .8)',
     color: '#fff',
     borderRadius: 4,
     minWidth: 150,

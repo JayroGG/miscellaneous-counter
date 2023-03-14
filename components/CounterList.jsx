@@ -30,7 +30,7 @@ const CounterList = () => {
       }}
     />
     <Link to='/new' underlayColor='transparent'>
-      <Text style={styles.new}> Add + </Text>
+      <Text style={styles.new}> + </Text>
     </Link>
   </View>
   )
@@ -39,18 +39,24 @@ const CounterList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
   },
   title: {
     textAlign: 'center',
-    fontSize: 40
+    fontSize: 40,
+    backgroundColor: 'rgba(193, 201, 205, 0.7)',
+    color: '#fff',
+    borderRadius: 10,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    marginBottom: 30,
   },
   new: {
-    fontSize: 40,
+    fontSize: 60,
     marginBottom: 8,
     padding: 4,
-    color: '#fff',
-    backgroundColor: '#5C9DC0',
     alignSelf: 'center',
+    color: '#fff',
     borderRadius: 4,
     overflow: 'hidden'
   },

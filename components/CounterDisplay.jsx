@@ -18,7 +18,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
   const [reseting, setReseting] = useState(false)
   const x = useSharedValue(startingPosition)
   const y = useSharedValue(startingPosition)
-  let backgroundColor = '#5C8EC0'
+  let backgroundColor = 'rgba(55, 60, 62, 0.7)'
   
   deleting ? backgroundColor = 'red'
     : fastIncrement ? backgroundColor = '#5CB8C0'
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     color: '#fff',
     fontSize: 100,
-    borderRadius: 40
+    borderRadius: 40,
   }
 })
 

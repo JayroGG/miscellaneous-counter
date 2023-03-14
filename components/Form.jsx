@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
   labelText: {
     textAlign: 'center', 
     fontSize: 30, 
-    marginBottom: 30
+    marginBottom: 30,
+    color: '#fff',
   },
 })
 
