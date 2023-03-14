@@ -4,7 +4,6 @@ import Counter from './Counter'
 import { getCounters } from '../services/getCounters'
 import { Link } from 'react-router-native'
 
-
 const CounterList = () => {
   const [counters, setCounters] = useState([])
 
@@ -23,11 +22,12 @@ const CounterList = () => {
       renderItem={({ item: counter }) => {
         const name = counter[0]
         return (
-          <Counter
-            key={name}
-            counterName={counter[0]}
-            value={counter[1]}
-          />)
+            <Counter
+              key={name}
+              counterName={name}
+              value={counter[1]}
+            />
+        )
       }}
     />
     <Link to='/new' underlayColor='transparent'>

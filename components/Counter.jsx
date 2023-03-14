@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import CounterDisplay from './CounterDisplay'
 import CounterBotom from './CounterBottom'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
   const [count, setCount] = useState(JSON.parse(value))
@@ -11,13 +10,13 @@ const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
     return null
   }
 
-  return (<GestureHandlerRootView style={styles.container}>
+  return (<>
     <View style={{ alignItems: 'center', marginVertical: 20 }}>
       <Text style={styles.title}>{counterName.toUpperCase()}</Text>
     </View>
     <CounterDisplay counterName={counterName} count={count} func={setCount} />
     <CounterBotom counterName={counterName} func={setCount} />
-  </GestureHandlerRootView>
+  </>
 
   )
 }

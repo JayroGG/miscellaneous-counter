@@ -7,10 +7,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-  withRepeat,
-  withTiming,
   runOnJS,
-  withSequence
 } from 'react-native-reanimated'
 
 const CounterDisplay = ({ counterName, func, count }) => {
