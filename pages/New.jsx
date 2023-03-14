@@ -1,14 +1,10 @@
 import React from 'react'
-import { Text, StyleSheet, View } from 'react-native'
-import { Link } from 'react-router-native'
+import { StyleSheet, View } from 'react-native'
 import Constants from 'expo-constants'
 import Form from '../components/Form'
 
 const New = () => {
   return <View style={styles.container}>
-    <Link to='/' underlayColor='transparent'>
-      <Text>Back Home</Text>
-    </Link>
     <Form />
   </View>
 }
