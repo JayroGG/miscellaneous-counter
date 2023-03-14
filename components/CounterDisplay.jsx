@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, View, StyleSheet, Vibration } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { PanGestureHandler } from 'react-native-gesture-handler'
@@ -12,8 +12,19 @@ import Animated, {
 
 const CounterDisplay = ({ counterName, func, count }) => {
   const startingPosition = 0
+  const [deleting, setDeleting] = useState(false)
+  const [fastIncrement, setFastIncrement] = useState(false)
+  const [fastDecrement, setFastDecrement] = useState(false)
+  const [reseting, setReseting] = useState(false)
   const x = useSharedValue(startingPosition)
   const y = useSharedValue(startingPosition)
+  let backgroundColor = '#5C8EC0'
+  
+  deleting ? backgroundColor = 'red'
+    : fastIncrement ? backgroundColor = '#5CB8C0'
+    : fastDecrement ? backgroundColor = '#A25CC0'
+    : reseting ? backgroundColor = 'gray'
+    : console.log('noactions')
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -38,7 +49,6 @@ const CounterDisplay = ({ counterName, func, count }) => {
       .catch(err => console.log(err))
   }
   const reset = () => {
-    Vibration.vibrate(10)
     AsyncStorage.setItem(counterName, JSON.stringify(0))
       .then(func(0))
       .catch(err => console.log(err))
@@ -59,33 +69,46 @@ const CounterDisplay = ({ counterName, func, count }) => {
       y.value = event.translationY
       if (x.value > 100) {
         runOnJS(add)()
-      } else if (x.value < -100) {
-        runOnJS(less)()
+        runOnJS(setFastIncrement)(true)
+      } else {
+        runOnJS(setFastIncrement)(false)
       }
+      if (x.value < -100) { 
+        runOnJS(setFastDecrement)(true)
+        runOnJS(less)()
+      } else {
+        runOnJS(setFastDecrement)(false)
+      }
+      if (y.value > 150) {
+        runOnJS(setDeleting)(true)
+      } else {
+        runOnJS(setDeleting)(false)
+      } 
+      if (y.value < -100) {
+        runOnJS(setReseting)(true)
+      } else {
+        runOnJS(setReseting)(false)
+      } 
     },
     onEnd: (event, ctx) => {
+      x.value > 0 ? runOnJS(add)() 
+      : x.value < 0 ? runOnJS(less)()
+      : console.log('No horizontal actions')
+
+      y.value < -100 ? runOnJS(reset)()
+      : y.value > 150 ? runOnJS(remove)()
+      : console.log('No vertical actions')
+      runOnJS(setFastIncrement)(false)
+      runOnJS(setFastDecrement)(false)
+      runOnJS(setReseting)(false)
       x.value = withSpring(startingPosition)
       y.value = withSpring(startingPosition)
-      runOnJS(Vibration.vibrate)(10)
-      console.log(x.value)
-      console.log(y.value)
-      if (x.value > 0) {
-        runOnJS(add)()
-      } else if (x.value < 0) {
-        runOnJS(less)()
-      }
-      if (y.value < -100) {
-        runOnJS(reset)()
-      }
-      if (y.value > 100) {
-        runOnJS(remove)()
-      }
     }
   })
-  return <View style={styles.countContainer}>
+  return <View >
     <PanGestureHandler onGestureEvent={eventHandler}>
       <Animated.View style={[animatedStyles, styles.animatedContainer]}>
-        <Text style={styles.counterDisplay}>{count}</Text>
+        <Text style={[styles.counterDisplay, { backgroundColor: backgroundColor }]}>{count}</Text>
       </Animated.View>
     </PanGestureHandler>
   </View>
@@ -96,13 +119,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
-  countContainer: {
-    paddingBottom: 10
-  },
   counterDisplay: {
     paddingHorizontal: 20,
     color: '#fff',
-    backgroundColor: '#0049FF',
     fontSize: 100,
     borderRadius: 40
   }

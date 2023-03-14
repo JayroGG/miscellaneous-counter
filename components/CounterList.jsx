@@ -18,7 +18,6 @@ const CounterList = () => {
     <FlatList
       showsVerticalScrollIndicator={false}
       data={counters}
-      ItemSeparatorComponent={() => <Text> </Text>}
       renderItem={({ item: counter }) => {
         const name = counter[0]
         return (
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     padding: 4,
     color: '#fff',
-    backgroundColor: '#0366d6',
+    backgroundColor: '#5C9DC0',
     alignSelf: 'center',
     borderRadius: 4,
     overflow: 'hidden'
