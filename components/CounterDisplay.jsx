@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   counterDisplay: {
     paddingHorizontal: 20,
     color: '#fff',
-    backgroundColor: '#004972',
+    backgroundColor: '#0049FF',
     fontSize: 150,
     borderRadius: 40
   }

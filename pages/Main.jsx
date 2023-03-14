@@ -16,6 +16,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: Constants.statusBarHeight + 10,
-    margin: 20,
   },
 })
