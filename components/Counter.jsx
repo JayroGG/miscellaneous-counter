@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TextInput } from 'react-native'
 import CounterDisplay from './CounterDisplay'
 
-const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
+const Counter = ({ counterName, value } = {}) => {
   const [count, setCount] = useState(JSON.parse(value))
 
   if (count === null) {
@@ -11,7 +11,7 @@ const Counter = ({ counterName = 'Unknow', value = '0' } = {}) => {
 
   return (<View style={styles.container}>
     <View style={styles.titleContainer}>
-      <Text style={styles.title}>{counterName.toUpperCase()}</Text>
+      <TextInput style={styles.title}>{counterName.toUpperCase()}</TextInput>
     </View>
     <View style={styles.counterContainer}>
       <CounterDisplay counterName={counterName} count={count} func={setCount} />

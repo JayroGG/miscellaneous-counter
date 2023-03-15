@@ -11,21 +11,25 @@ import Animated, {
 } from 'react-native-reanimated'
 
 const CounterDisplay = ({ counterName, func, count }) => {
+  // Center of the Counter
   const startingPosition = 0
+  // States for reactive coloring
   const [deleting, setDeleting] = useState(false)
   const [fastIncrement, setFastIncrement] = useState(false)
   const [fastDecrement, setFastDecrement] = useState(false)
   const [reseting, setReseting] = useState(false)
+  // Shared Values for the animation
   const x = useSharedValue(startingPosition)
   const y = useSharedValue(startingPosition)
+  // Dynamic background that changes with the previos states
   let backgroundColor = 'rgba(55, 60, 62, 0.7)'
   
-  deleting ? backgroundColor = 'red'
+  deleting ? backgroundColor = '#E55633'
     : fastIncrement ? backgroundColor = '#5CB8C0'
     : fastDecrement ? backgroundColor = '#A25CC0'
     : reseting ? backgroundColor = 'gray'
-    : console.log('noactions')
-
+    : null
+  // Animated styles for changing the position of the display
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
@@ -34,6 +38,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
       ]
     }
   })
+  // Functions that increment, decrement, reset and remove the counter
   const add = () => {
     Vibration.vibrate(10)
     const newCount = count + 1
@@ -43,7 +48,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
   }
   const less = () => {
     Vibration.vibrate(10)
-    const newCount = count === 0 ? 0 : count - 1
+    const newCount = count < 1 ? 0 : count - 1
     AsyncStorage.setItem(counterName, JSON.stringify(newCount))
       .then(func(newCount))
       .catch(err => console.log(err))
@@ -59,14 +64,18 @@ const CounterDisplay = ({ counterName, func, count }) => {
       .then(() => func(null))
       .catch(err => console.log(err))
   }
+  // Event hanlder provided by Reanimated that is specifically designed to work with the gesture-handler package
   const eventHandler = useAnimatedGestureHandler({
+    // Starting position of the display
     onStart: (event, ctx) => {
       ctx.startX = x.value
       ctx.startY = y.value
     },
     onActive: (event, ctx) => {
+      // This change thr actual position of the display
       x.value = event.translationX
       y.value = event.translationY
+      // Executing methods, and changing the previus states by position
       if (x.value > 100) {
         runOnJS(add)()
         runOnJS(setFastIncrement)(true)
@@ -79,7 +88,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
       } else {
         runOnJS(setFastDecrement)(false)
       }
-      if (y.value > 150) {
+      if (y.value > 110) {
         runOnJS(setDeleting)(true)
       } else {
         runOnJS(setDeleting)(false)
@@ -91,16 +100,20 @@ const CounterDisplay = ({ counterName, func, count }) => {
       } 
     },
     onEnd: (event, ctx) => {
+      // Verifies the last position when the display was released
+      // in order to execute the corresponding methods and states
       x.value > 0 ? runOnJS(add)() 
       : x.value < 0 ? runOnJS(less)()
-      : console.log('No horizontal actions')
+      : null
 
       y.value < -100 ? runOnJS(reset)()
-      : y.value > 150 ? runOnJS(remove)()
-      : console.log('No vertical actions')
+      : y.value > 110 ? runOnJS(remove)()
+      : null
+
       runOnJS(setFastIncrement)(false)
       runOnJS(setFastDecrement)(false)
       runOnJS(setReseting)(false)
+      // Restarting the display position
       x.value = withSpring(startingPosition)
       y.value = withSpring(startingPosition)
     }
