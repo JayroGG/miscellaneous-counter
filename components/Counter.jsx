@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet, TextInput } from 'react-native'
 import CounterDisplay from './CounterDisplay'
 
 const Counter = ({ counterName, value } = {}) => {
@@ -22,12 +22,12 @@ const Counter = ({ counterName, value } = {}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    padding: 20, 
+    flex: 1,
+    padding: 20,
     minHeight: 370,
     minWidth: 421,
   },
-  titleContainer: { 
+  titleContainer: {
     alignItems: 'center',
   },
   title: {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   counterContainer: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'center'
   },
 })

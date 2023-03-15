@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#748F9A',
+    backgroundColor: '#5E97FF', // 5E97FF80
     paddingTop: Constants.statusBarHeight,
   },
 })

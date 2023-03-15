@@ -49,10 +49,10 @@ const Form = () => {
       maxLength={7}
     />
     <View style={styles.options}>
-      <Link to='/' underlayColor='transparent' style={{ backgroundColor: '#E55633', padding: 10, marginRight: 5, minWidth: 100, borderRadius: 10 }}>
+      <Link to='/' underlayColor='transparent' style={styles.link}>
         <Text style={styles.text}>Back</Text>
       </Link>
-      <View style={{ backgroundColor: '#5C9DC0', justifyContent: 'center', padding: 10, marginLeft: 5, minWidth: 100, borderRadius: 10 }} >
+      <View style={styles.save} >
         <TouchableWithoutFeedback onPress={handleSubmit}>
           <Text style={styles.text}>Save</Text>
         </TouchableWithoutFeedback>
@@ -69,12 +69,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
+    minHeight: 100,
+    minWidth: 300,
     textAlign: 'center',
     fontSize: 30,
     marginBottom: 100,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   options: {
     flexDirection: 'row',
+  },
+  link: {
+    backgroundColor: '#E55633', 
+    padding: 10, 
+    marginRight: 5, 
+    minWidth: 100, 
+    borderRadius: 10 
+  },
+  save: {
+    backgroundColor: '#5C9DC0', 
+    justifyContent: 'center', 
+    padding: 10, 
+    marginLeft: 5, 
+    minWidth: 100, 
+    borderRadius: 10 
   },
   text: {
     textAlign: 'center',
