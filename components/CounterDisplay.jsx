@@ -23,12 +23,12 @@ const CounterDisplay = ({ counterName, func, count }) => {
   const y = useSharedValue(startingPosition)
   // Dynamic background that changes with the previos states
   let backgroundColor = 'rgba(55, 60, 62, 0.7)'
-  
+
   deleting ? backgroundColor = '#E55633'
     : fastIncrement ? backgroundColor = '#5CB8C0'
-    : fastDecrement ? backgroundColor = '#A25CC0'
-    : reseting ? backgroundColor = 'gray'
-    : null
+      : fastDecrement ? backgroundColor = '#A25CC0'
+        : reseting ? backgroundColor = 'gray'
+          : null
   // Animated styles for changing the position of the display
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -76,49 +76,72 @@ const CounterDisplay = ({ counterName, func, count }) => {
       x.value = event.translationX
       y.value = event.translationY
       // Executing methods, and changing the previus states by position
-      if (x.value > 100) {
+      if (x.value >= 140) {
+        x.value = 140
         runOnJS(add)()
         runOnJS(setFastIncrement)(true)
       } else {
         runOnJS(setFastIncrement)(false)
       }
-      if (x.value < -100) { 
+      if (x.value <= -140) {
+        x.value = -140
         runOnJS(setFastDecrement)(true)
         runOnJS(less)()
       } else {
         runOnJS(setFastDecrement)(false)
       }
-      if (y.value > 110) {
-        runOnJS(setDeleting)(true)
-      } else {
-        runOnJS(setDeleting)(false)
+      if (y.value >= 110) {
+        y.value = 110
       } 
-      if (y.value < -100) {
+      if (y.value >= 110 && x.value <= 50 && x.value >= -50) {
+        runOnJS(setDeleting)(true)
+      }
+      else {
+        runOnJS(setDeleting)(false)
+      }
+      if (y.value <= -90) {
+        y.value = -90
+      } 
+      if (y.value <= -90 && x.value <= 50 && x.value >= -50) {
         runOnJS(setReseting)(true)
       } else {
         runOnJS(setReseting)(false)
-      } 
+      }
     },
     onEnd: (event, ctx) => {
       // Verifies the last position when the display was released
       // in order to execute the corresponding methods and states
-      x.value > 0 ? runOnJS(add)() 
-      : x.value < 0 ? runOnJS(less)()
-      : null
+      if (x.value > 0) {
+        runOnJS(add)()
+      } else if (x.value < 0) {
+        runOnJS(less)()
+      }
 
-      y.value < -100 ? runOnJS(reset)()
-      : y.value > 110 ? runOnJS(remove)()
-      : null
-
+      if (y.value <= -90 && x.value <= 50 && x.value >= -50) {
+        runOnJS(reset)()
+      } else if (y.value >= 110 && x.value <= 50 && x.value >= -50) {
+        runOnJS(remove)()
+      }
+      
       runOnJS(setFastIncrement)(false)
       runOnJS(setFastDecrement)(false)
       runOnJS(setReseting)(false)
       // Restarting the display position
-      x.value = withSpring(startingPosition)
-      y.value = withSpring(startingPosition)
+      x.value = withSpring(startingPosition, {
+        damping: 10,
+        mass: .5,
+        stiffness: 700,
+        overshootClamping: false,
+      })
+      y.value = withSpring(startingPosition, {
+        damping: 10,
+        mass: .5,
+        stiffness: 700,
+        overshootClamping: false,
+      })
     }
   })
-  return <View >
+  return <View>
     <PanGestureHandler onGestureEvent={eventHandler}>
       <Animated.View style={[animatedStyles, styles.animatedContainer]}>
         <Text style={[styles.counterDisplay, { backgroundColor: backgroundColor }]}>{count}</Text>
