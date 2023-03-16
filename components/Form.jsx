@@ -8,6 +8,7 @@ const Form = () => {
   const [name, setName] = useState('')
   const [value, setValue] = useState('')
   const navigate = useNavigate()
+  // [["key", {"counterName": "Test", "count": "3"}]
 
   const handleSubmit = async () => {
     // Cleanign the string from empty spaces
@@ -17,14 +18,12 @@ const Form = () => {
     let val = trimedVal.replace(/\D/g, "")
     // if empty gets asiganted a value for key and val
     if (key === '') {
-      const query = await AsyncStorage.getItem('Count')
-      const count = query === null ? '' : JSON.parse(query)
-      key = `Count${count}`
+      key = "Count"
     }
-    if (val === '') val = '0'
+    if (val === '') val = "0"
     // Saving in the storage
     try {
-      await AsyncStorage.setItem(key, val)
+      await AsyncStorage.setItem(key, JSON.stringify({"counterName": key, "count": val}))
       navigate('/')
     } catch (error) {
       console.error({ message: error })

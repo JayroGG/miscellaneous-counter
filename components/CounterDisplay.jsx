@@ -42,19 +42,21 @@ const CounterDisplay = ({ counterName, func, count }) => {
   const add = () => {
     Vibration.vibrate(10)
     const newCount = count + 1
-    AsyncStorage.setItem(counterName, JSON.stringify(newCount))
+
+    // (key, JSON.stringify({"counterName": key, "count": val}))
+    AsyncStorage.setItem(counterName, JSON.stringify({ "counterName": counterName, "count": newCount }))
       .then(func(newCount))
       .catch(err => console.log(err))
   }
   const less = () => {
     Vibration.vibrate(10)
     const newCount = count < 1 ? 0 : count - 1
-    AsyncStorage.setItem(counterName, JSON.stringify(newCount))
+    AsyncStorage.setItem(counterName, JSON.stringify({ "counterName": counterName, "count": newCount }))
       .then(func(newCount))
       .catch(err => console.log(err))
   }
   const reset = () => {
-    AsyncStorage.setItem(counterName, JSON.stringify(0))
+    AsyncStorage.setItem(counterName, JSON.stringify({ "counterName": counterName, "count": 0 }))
       .then(func(0))
       .catch(err => console.log(err))
   }
@@ -92,7 +94,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
       }
       if (y.value >= 110) {
         y.value = 110
-      } 
+      }
       if (y.value >= 110 && x.value <= 50 && x.value >= -50) {
         runOnJS(setDeleting)(true)
       }
@@ -101,7 +103,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
       }
       if (y.value <= -90) {
         y.value = -90
-      } 
+      }
       if (y.value <= -90 && x.value <= 50 && x.value >= -50) {
         runOnJS(setReseting)(true)
       } else {
@@ -122,7 +124,7 @@ const CounterDisplay = ({ counterName, func, count }) => {
       } else if (y.value >= 110 && x.value <= 50 && x.value >= -50) {
         runOnJS(remove)()
       }
-      
+
       runOnJS(setFastIncrement)(false)
       runOnJS(setFastDecrement)(false)
       runOnJS(setReseting)(false)

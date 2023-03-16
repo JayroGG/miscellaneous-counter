@@ -19,12 +19,15 @@ const CounterList = () => {
       showsVerticalScrollIndicator={false}
       data={counters}
       renderItem={({ item: counter }) => {
-        const name = counter[0]
+        const key = counter[0]
+        const value = JSON.parse(counter[1])
+        const name = value.counterName
+        const count = value.count
         return (
           <Counter
-            key={name}
+            key={key}
             counterName={name}
-            value={counter[1]}
+            value={count}
           />
         )
       }}
