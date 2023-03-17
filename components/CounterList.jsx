@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Text, View, StyleSheet, FlatList } from 'react-native'
 import Counter from './Counter'
 import { getCounters } from '../services/getCounters'
+import { setCounter } from '../services/setCounter'
 import { Link } from 'react-router-native'
 import { PanGestureHandler } from 'react-native-gesture-handler'
+import { useNavigate } from 'react-router-native'
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
@@ -12,8 +14,10 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated'
 
+
 const CounterList = () => {
   const [counters, setCounters] = useState([])
+  const navigate = useNavigate()
   const x = useSharedValue(0)
   const y = useSharedValue(0)
 
@@ -45,8 +49,23 @@ const CounterList = () => {
       
     },
     onEnd: (event, ctx) => {
-      x.value = 0
-      y.value = 0
+      if (y.value <= -100) {
+        runOnJS(setCounter)()
+        runOnJS(navigate)('/')
+      }
+
+      x.value = withSpring(0, {
+        damping: 10,
+        mass: .5,
+        stiffness: 700,
+        overshootClamping: false,
+      })
+      y.value = withSpring(0, {
+        damping: 10,
+        mass: .5,
+        stiffness: 700,
+        overshootClamping: false,
+      })
     }
   })
   return (<View style={styles.container}>
