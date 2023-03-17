@@ -1,34 +1,18 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { Link } from 'react-router-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigate } from 'react-router-native'
+import { setCounter } from '../services/setCounter'
 
 const Form = () => {
   const [name, setName] = useState('')
   const [value, setValue] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = async () => {
-    // Cleanign the string from empty spaces
-    let counterName = name.trim()
-    const trimedVal = value.trim()
-    // Regular expresion that takes out all non digit characters
-    let val = trimedVal.replace(/\D/g, "")
-    if (val === '') val = "0"
+  const handleSubmit = () => {
+    
     // Saving in the storage
-    try {
-      // Count the number of items in the storage in order to give a unique key
-      const key = await (await AsyncStorage.getAllKeys((err, keys) => keys)).length
-      // if empty gets asiganted a value for key and val
-      if (counterName === '') {
-        counterName = `Counter${key}`
-      }
-      await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify({ "counterName": counterName, "count": val }))
-      navigate('/')
-    } catch (error) {
-      console.error({ message: error })
-    }
+    setCounter(name, value).then(()=>navigate('/'))
   }
 
   return <View style={styles.container}>
