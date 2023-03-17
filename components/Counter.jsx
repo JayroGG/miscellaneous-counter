@@ -1,20 +1,32 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TextInput } from 'react-native'
 import CounterDisplay from './CounterDisplay'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigate } from 'react-router-native'
 
 const Counter = ({ counterName, value } = {}) => {
   const [count, setCount] = useState(JSON.parse(value))
-
+  const [newName, setNewName] = useState(counterName)
+  const navigate = useNavigate()
   if (count === null) {
     return null
   }
 
+  const handleSubmit = async () => {
+    try {
+      await AsyncStorage.setItem(counterName, JSON.stringify({"counterName": newName, "count": count}))
+      navigate('/')
+    } catch (error) {
+      console.error({ message: error })
+    }
+  }
+
   return (<View style={styles.container}>
     <View style={styles.titleContainer}>
-      <TextInput style={styles.title}>{counterName.toUpperCase()}</TextInput>
+      <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={handleSubmit}>{counterName.toUpperCase()}</TextInput>
     </View>
     <View style={styles.counterContainer}>
-      <CounterDisplay counterName={counterName} count={count} func={setCount} />
+      <CounterDisplay key={newName} counterName={newName} count={count} func={setCount} />
     </View>
   </View>
   )
