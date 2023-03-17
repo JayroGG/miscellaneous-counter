@@ -11,18 +11,20 @@ const Form = () => {
 
   const handleSubmit = async () => {
     // Cleanign the string from empty spaces
-    let key = name.trim()
+    let counterName = name.trim()
     const trimedVal = value.trim()
     // Regular expresion that takes out all non digit characters
     let val = trimedVal.replace(/\D/g, "")
-    // if empty gets asiganted a value for key and val
-    if (key === '') {
-      key = "Count"
-    }
     if (val === '') val = "0"
     // Saving in the storage
     try {
-      await AsyncStorage.setItem(key, JSON.stringify({"counterName": key, "count": val}))
+      // Count the number of items in the storage in order to give a unique key
+      const key = await (await AsyncStorage.getAllKeys((err, keys) => keys)).length
+      // if empty gets asiganted a value for key and val
+      if (counterName === '') {
+        counterName = `Counter${key}`
+      }
+      await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify({ "counterName": counterName, "count": val }))
       navigate('/')
     } catch (error) {
       console.error({ message: error })
@@ -78,19 +80,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   link: {
-    backgroundColor: '#E55633', 
-    padding: 10, 
-    marginRight: 5, 
-    minWidth: 100, 
-    borderRadius: 10 
+    backgroundColor: '#E55633',
+    padding: 10,
+    marginRight: 5,
+    minWidth: 100,
+    borderRadius: 10
   },
   save: {
-    backgroundColor: '#5C9DC0', 
-    justifyContent: 'center', 
-    padding: 10, 
-    marginLeft: 5, 
-    minWidth: 100, 
-    borderRadius: 10 
+    backgroundColor: '#5C9DC0',
+    justifyContent: 'center',
+    padding: 10,
+    marginLeft: 5,
+    minWidth: 100,
+    borderRadius: 10
   },
   text: {
     textAlign: 'center',

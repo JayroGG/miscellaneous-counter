@@ -10,7 +10,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated'
 
-const CounterDisplay = ({ counterName, func, count }) => {
+const CounterDisplay = ({ id, counterName, func, count }) => {
   // Center of the Counter
   const startingPosition = 0
   // States for reactive coloring
@@ -44,25 +44,25 @@ const CounterDisplay = ({ counterName, func, count }) => {
     const newCount = count + 1
 
     // (key, JSON.stringify({"counterName": key, "count": val}))
-    AsyncStorage.setItem(counterName, JSON.stringify({ "counterName": counterName, "count": newCount }))
+    AsyncStorage.setItem(id, JSON.stringify({ "counterName": counterName, "count": newCount }))
       .then(func(newCount))
       .catch(err => console.log(err))
   }
   const less = () => {
     Vibration.vibrate(10)
     const newCount = count < 1 ? 0 : count - 1
-    AsyncStorage.setItem(counterName, JSON.stringify({ "counterName": counterName, "count": newCount }))
+    AsyncStorage.setItem(id, JSON.stringify({ "counterName": counterName, "count": newCount }))
       .then(func(newCount))
       .catch(err => console.log(err))
   }
   const reset = () => {
-    AsyncStorage.setItem(counterName, JSON.stringify({ "counterName": counterName, "count": 0 }))
+    AsyncStorage.setItem(id, JSON.stringify({ "counterName": counterName, "count": 0 }))
       .then(func(0))
       .catch(err => console.log(err))
   }
   const remove = () => {
     Vibration.vibrate(10)
-    AsyncStorage.removeItem(counterName)
+    AsyncStorage.removeItem(id)
       .then(() => func(null))
       .catch(err => console.log(err))
   }
