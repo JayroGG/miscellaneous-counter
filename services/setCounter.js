@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const setCounter = async (name, value) => {
-  console.log(name, value)
   let counterName
   let trimedVal
   // Verifiying data and cleaning the string from empty spaces
@@ -16,8 +15,8 @@ export const setCounter = async (name, value) => {
     trimedVal = value.trim()
   }
 
-  // Regular expresion that takes out all non digit characters
-  let filteredVal = trimedVal.replace(/\D/g, "")
+  // Regular expresion that takes out all non digit characters and leadding zeros
+  let filteredVal = trimedVal.replace(/^0+/, "").replace(/\D/g, "")
   if (filteredVal === '') filteredVal = "0"
   try {
     // Count the number of items in the storage in order to give a unique key

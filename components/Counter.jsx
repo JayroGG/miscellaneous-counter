@@ -14,7 +14,7 @@ const Counter = ({ id, counterName, value } = {}) => {
 
   const handleSubmit = async () => {
     try {
-      await AsyncStorage.setItem(id, JSON.stringify({"counterName": newName, "count": count}))
+      await AsyncStorage.setItem(JSON.stringify(id), JSON.stringify({ "counterName": newName, "count": count }))
       navigate('/')
     } catch (error) {
       console.error({ message: error })

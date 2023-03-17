@@ -33,7 +33,7 @@ const CounterList = () => {
   useEffect(() => {
     getCounters().then(data => setCounters(data))
   }, [setCounters])
-
+  console.log(counters)
   const handleGesture = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.startX = x.value
@@ -46,7 +46,7 @@ const CounterList = () => {
       if (y.value < -100) y.value = -100
       if (x.value > 100) x.value = 100
       if (x.value < -100) x.value = -100
-      
+
     },
     onEnd: (event, ctx) => {
       if (y.value <= -100) {
