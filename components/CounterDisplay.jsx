@@ -155,7 +155,10 @@ const CounterDisplay = ({ counterName, func, count }) => {
 const styles = StyleSheet.create({
   animatedContainer: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    maxWidth: 200,
+    marginLeft: 92,
+    marginTop: 10,
   },
   counterDisplay: {
     paddingHorizontal: 20,

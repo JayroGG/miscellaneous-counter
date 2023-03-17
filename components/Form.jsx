@@ -8,7 +8,6 @@ const Form = () => {
   const [name, setName] = useState('')
   const [value, setValue] = useState('')
   const navigate = useNavigate()
-  // [["key", {"counterName": "Test", "count": "3"}]
 
   const handleSubmit = async () => {
     // Cleanign the string from empty spaces
