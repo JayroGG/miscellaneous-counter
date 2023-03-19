@@ -1,24 +1,13 @@
 import React from 'react'
-import { Text, View, StyleSheet, FlatList, Vibration } from 'react-native'
+import { Text, View, StyleSheet, FlatList } from 'react-native'
 import Counter from '../components/Counter/Counter'
 import { Link } from 'react-router-native'
 import { PanGestureHandler } from 'react-native-gesture-handler'
-import Animated, { useSharedValue } from 'react-native-reanimated'
-import { useCounters } from '../hooks/useCounters'
-import { animatedMove } from '../utils/animatedStyles'
-import { handleGesture } from '../utils/handleGesture'
+import Animated from 'react-native-reanimated'
+import withGestureList from '../HOCs/withGestureList'
 
 
-const CounterList = () => {
-  const x = useSharedValue(0)
-  const y = useSharedValue(0)
-
-  const animatedGesture = animatedMove(x, y)
-
-  const counters = useCounters()
-
-  console.log(counters)
-  const handleSwipe = handleGesture(x, y)
+const CounterList = ({ counters, handleSwipe, animatedGesture }) => {
 
   return (<View style={styles.container}>
     <Text style={styles.title}>Miscellaneous List</Text>
@@ -80,4 +69,5 @@ const styles = StyleSheet.create({
   },
 })
 
-export default CounterList
+const GestureList = withGestureList(CounterList)
+export default GestureList
