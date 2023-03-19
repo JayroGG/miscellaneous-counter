@@ -14,7 +14,7 @@ const Counter = ({ id, counterName, value } = {}) => {
 
   const handleSubmit = async () => {
     try {
-      await AsyncStorage.setItem(JSON.stringify(id), JSON.stringify({ "counterName": newName, "count": count }))
+      await AsyncStorage.setItem(id, JSON.stringify({ "counterName": newName, "count": count }))
       navigate('/')
     } catch (error) {
       console.error({ message: error })
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    minHeight: 370,
+    minHeight: 200,
     minWidth: 421,
   },
   titleContainer: {

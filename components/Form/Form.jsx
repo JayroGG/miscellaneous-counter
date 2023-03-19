@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { Link } from 'react-router-native'
 import { useNavigate } from 'react-router-native'
-import { setCounter } from '../services/setCounter'
+import { setCounter } from '../../services/setCounter'
 
 const Form = () => {
   const [name, setName] = useState('')

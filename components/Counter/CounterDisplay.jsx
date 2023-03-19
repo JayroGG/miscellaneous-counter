@@ -9,6 +9,7 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated'
+import { animatedMove } from '../../utils/animatedStyles'
 
 const CounterDisplay = ({ id, counterName, func, count }) => {
   // Center of the Counter
@@ -22,7 +23,7 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
   const x = useSharedValue(startingPosition)
   const y = useSharedValue(startingPosition)
   // Dynamic background that changes with the previos states
-  let backgroundColor = 'rgba(55, 60, 62, 0.7)'
+  let backgroundColor = 'white'
 
   deleting ? backgroundColor = '#E55633'
     : fastIncrement ? backgroundColor = '#5CB8C0'
@@ -30,14 +31,8 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
         : reseting ? backgroundColor = 'gray'
           : null
   // Animated styles for changing the position of the display
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: x.value },
-        { translateY: y.value },
-      ]
-    }
-  })
+  const animatedStyles = animatedMove(x, y)
+  
   // Functions that increment, decrement, reset and remove the counter
   const add = () => {
     Vibration.vibrate(10)
@@ -70,8 +65,7 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
   const eventHandler = useAnimatedGestureHandler({
     // Starting position of the display
     onStart: (event, ctx) => {
-      ctx.startX = x.value
-      ctx.startY = y.value
+
     },
     onActive: (event, ctx) => {
       // This change thr actual position of the display
@@ -161,9 +155,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   counterDisplay: {
+    fontSize: 70,
     paddingHorizontal: 20,
-    color: '#fff',
-    fontSize: 100,
     borderRadius: 40,
   }
 })

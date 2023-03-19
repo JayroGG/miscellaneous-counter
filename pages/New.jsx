@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Constants from 'expo-constants'
-import Form from '../components/Form'
+import Form from '../components/Form/Form'
 
 const New = () => {
   return <View style={styles.container}>

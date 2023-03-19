@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import CounterList from '../components/CounterList'
+import CounterList from '../ui/CounterList'
 import Constants from 'expo-constants'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#5E97FF', // 5E97FF80
+    backgroundColor: 'black', // 5E97FF80
     paddingTop: Constants.statusBarHeight,
   },
 })
