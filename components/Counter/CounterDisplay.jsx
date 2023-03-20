@@ -26,13 +26,11 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
   let backgroundColor = 'white'
 
   deleting ? backgroundColor = '#E55633'
-    : fastIncrement ? backgroundColor = '#5CB8C0'
-      : fastDecrement ? backgroundColor = '#A25CC0'
-        : reseting ? backgroundColor = 'gray'
-          : null
+    : reseting ? backgroundColor = 'gray'
+      : null
   // Animated styles for changing the position of the display
   const animatedStyles = animatedMove(x, y)
-  
+
   // Functions that increment, decrement, reset and remove the counter
   const add = () => {
     Vibration.vibrate(10)
@@ -72,52 +70,23 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
       x.value = event.translationX
       y.value = event.translationY
       // Executing methods, and changing the previus states by position
-      if (x.value >= 140) {
-        x.value = 140
-        runOnJS(add)()
-        runOnJS(setFastIncrement)(true)
-      } else {
-        runOnJS(setFastIncrement)(false)
-      }
-      if (x.value <= -140) {
-        x.value = -140
-        runOnJS(setFastDecrement)(true)
-        runOnJS(less)()
-      } else {
-        runOnJS(setFastDecrement)(false)
-      }
-      if (y.value >= 110) {
-        y.value = 110
-      }
-      if (y.value >= 110 && x.value <= 50 && x.value >= -50) {
-        runOnJS(setDeleting)(true)
-      }
-      else {
-        runOnJS(setDeleting)(false)
-      }
-      if (y.value <= -90) {
-        y.value = -90
-      }
-      if (y.value <= -90 && x.value <= 50 && x.value >= -50) {
-        runOnJS(setReseting)(true)
-      } else {
-        runOnJS(setReseting)(false)
-      }
+
+      if (y.value >= 65) y.value = 65
+      if (y.value >= 65 && x.value <= 50 && x.value >= -50) runOnJS(setDeleting)(true)
+      else runOnJS(setDeleting)(false)
+
+      if (y.value <= -65) y.value = -65
+      if (y.value <= -65 && x.value <= 50 && x.value >= -50) runOnJS(setReseting)(true)
+      else runOnJS(setReseting)(false)
     },
     onEnd: (event, ctx) => {
       // Verifies the last position when the display was released
       // in order to execute the corresponding methods and states
-      if (x.value > 0) {
-        runOnJS(add)()
-      } else if (x.value < 0) {
-        runOnJS(less)()
-      }
+      if (x.value > 0)  runOnJS(add)()
+      else if (x.value < 0) runOnJS(less)()
 
-      if (y.value <= -90 && x.value <= 50 && x.value >= -50) {
-        runOnJS(reset)()
-      } else if (y.value >= 110 && x.value <= 50 && x.value >= -50) {
-        runOnJS(remove)()
-      }
+      if (y.value <= -65 && x.value <= 50 && x.value >= -50) runOnJS(reset)()
+      else if (y.value >= 65 && x.value <= 50 && x.value >= -50) runOnJS(remove)()
 
       runOnJS(setFastIncrement)(false)
       runOnJS(setFastDecrement)(false)
@@ -155,7 +124,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   counterDisplay: {
-    fontSize: 70,
+    fontSize: 50,
     paddingHorizontal: 20,
     borderRadius: 40,
   }
