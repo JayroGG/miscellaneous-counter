@@ -1,9 +1,9 @@
 import React from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import Counter from '../components/Counter/Counter'
 import withGestureList from '../HOCs/withGestureList'
 
-const CounterList = ({ counters, handleSwipe, animatedGesture }) => {
+const CounterList = ({ counters }) => {
 
   return (
     <FlatList
