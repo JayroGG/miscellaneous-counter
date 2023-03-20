@@ -23,10 +23,7 @@ const withGestureList = (Component, listTitle, direction) => {
     return (
       <View style={flexStyles}>
         <Text style={styles.title}>{listTitle}</Text>
-        <Component
-          counters={counters}
-          animatedGesture={animatedGesture}
-          handleSwipe={handleSwipe} />
+        <Component counters={counters} />
         <PanGestureHandler onGestureEvent={handleSwipe}>
           <Animated.View style={animatedGesture}>
             <Link to='/new' underlayColor='transparent'>
@@ -36,9 +33,8 @@ const withGestureList = (Component, listTitle, direction) => {
         </PanGestureHandler>
       </View>)
   }
-  return (
-    WrappedComponent
-  )
+  return WrappedComponent
+
 }
 const styles = StyleSheet.create({
   container: {
@@ -71,7 +67,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#fff',
     borderRadius: 4,
-    overflow: 'hidden'
-  },
+    overflow: 'hidden',
+  }
 })
 export default withGestureList

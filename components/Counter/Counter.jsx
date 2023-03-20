@@ -22,11 +22,13 @@ const Counter = ({ id, counterName, value } = {}) => {
   }
 
   return (<View style={styles.container}>
-    <View style={styles.titleContainer}>
-      <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={handleSubmit}>{counterName.toUpperCase()}</TextInput>
-    </View>
-    <View style={styles.counterContainer}>
-      <CounterDisplay key={newName} id={id} counterName={newName} count={count} func={setCount} />
+    <View style={styles.displayContainer}>
+      <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={handleSubmit}>
+        {counterName.toUpperCase()}
+      </TextInput>
+      <View style={{ marginBottom: 10 }}>
+        <CounterDisplay key={newName} id={id} counterName={newName} count={count} func={setCount} />
+      </View>
     </View>
   </View>
   )
@@ -36,11 +38,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    minHeight: 200,
+    minHeight: 130,
     minWidth: 421,
   },
-  titleContainer: {
-    alignItems: 'center',
+  displayContainer: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 10,
   },
   title: {
     fontSize: 20,
@@ -48,13 +53,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: 'rgba(0, 0, 0, .8)',
     color: '#fff',
-    borderRadius: 4,
-    minWidth: 150,
-    textAlign: 'center'
-  },
-  counterContainer: {
-    flex: 1,
-    justifyContent: 'center'
+    minWidth: 140,
+    textAlign: 'center',
+    // borderTopLeftRadius: 60,
+    borderBottomRightRadius: 30,
+    // borderTopRightRadius: 30
   },
 })
 
