@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet, TextInput, Text, TouchableWithoutFeedback, Vibration } from 'react-native'
 import CounterDisplay from './CounterDisplay'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigate } from 'react-router-native'
+import { responsivePixel } from '../../utils/responsivePixel'
+import { GestureDetector, Gesture } from 'react-native-gesture-handler'
+import { runOnJS } from 'react-native-reanimated'
 
 const Counter = ({ id, counterName, value } = {}) => {
   const [count, setCount] = useState(JSON.parse(value))
   const [newName, setNewName] = useState(counterName)
+  const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate()
   if (count === null) {
     return null
@@ -20,16 +24,47 @@ const Counter = ({ id, counterName, value } = {}) => {
       console.error({ message: error })
     }
   }
+  const longPressGesture = Gesture.LongPress().onEnd((e, success) => {
+    if (success && e.duration >= 600) {
+      runOnJS(setDeleting)(true)
+      // runOnJS(Alert.alert)("Delete item",
+      //   `Are you sure you want to delete the counter? ${newName}`,
+      //   [
+      //     {
+      //       text: "No",
+      //       style: "cancel",
+      //     },
+      //     {
+      //       text: "Yes",
+      //       onPress: () => console.log('deleted'),
+      //     },
+      //   ])
+    }
+  })
+
+  const remove = () => {
+    Vibration.vibrate(10)
+    AsyncStorage.removeItem(id)
+      .then(() => setCount(null))
+      .catch(err => console.log(err))
+  }
 
   return (<View style={styles.container}>
-    <View style={styles.displayContainer}>
-      <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={handleSubmit}>
-        {counterName.toUpperCase()}
-      </TextInput>
-      <View style={{ marginBottom: 10 }}>
-        <CounterDisplay key={newName} id={id} counterName={newName} count={count} func={setCount} />
+    {deleting &&
+      <TouchableWithoutFeedback onPress={remove}>
+        <Text style={{fontSize: 30, backgroundColor: '#F56960', borderRadius: 10, alignContent: 'center'}}>X</Text>
+      </TouchableWithoutFeedback>
+    }
+    <GestureDetector gesture={longPressGesture}>
+      <View style={styles.card}>
+        <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={handleSubmit}>
+          {counterName.toUpperCase()}
+        </TextInput>
+        <View >
+          <CounterDisplay key={newName} id={id} counterName={newName} count={count} func={setCount} />
+        </View>
       </View>
-    </View>
+    </GestureDetector>
   </View>
   )
 }
@@ -37,27 +72,52 @@ const Counter = ({ id, counterName, value } = {}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    minHeight: 130,
-    minWidth: 421,
+    paddingBottom: responsivePixel(10),
+    marginBottom: responsivePixel(30),
+    minWidth: responsivePixel(340),
+    // Shadow Tag
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 25,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
-  displayContainer: {
-    justifyContent: 'flex-start',
+  card: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    flexWrap: 'wrap',
+    backgroundColor: '#FBD589', // Background Counter Tag
+    borderTopRightRadius: responsivePixel(30),
+    borderBottomRightRadius: responsivePixel(30),
+    borderTopLeftRadius: responsivePixel(8),
+    borderBottomLeftRadius: responsivePixel(8),
+    minHeight: 100,
+    minWidth: responsivePixel(340),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+    elevation: 17,
   },
   title: {
-    fontSize: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: 'rgba(0, 0, 0, .8)',
+    fontWeight: 'bold',
+    fontSize: responsivePixel(20),
+    paddingVertical: responsivePixel(10),
+    paddingHorizontal: responsivePixel(10),
+    backgroundColor: '#F8B225', // 'rgba(0, 0, 0, .8)' Background title
     color: '#fff',
-    minWidth: 140,
+    minWidth: responsivePixel(140),
+    maxWidth: responsivePixel(200),
+    minHeight: 100,
     textAlign: 'center',
-    // borderTopLeftRadius: 60,
-    borderBottomRightRadius: 30,
-    // borderTopRightRadius: 30
+    borderWidth: .5,
+    borderTopLeftRadius: responsivePixel(6),
+    borderBottomLeftRadius: responsivePixel(6),
+    borderBottomRightRadius: responsivePixel(30),
+    // borderTopRightRadius: responsivePixel(30)
   },
 })
 
