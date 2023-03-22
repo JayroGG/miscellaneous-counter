@@ -5,29 +5,24 @@ import { PanGestureHandler } from 'react-native-gesture-handler'
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
-  useAnimatedStyle,
   withSpring,
   runOnJS,
 } from 'react-native-reanimated'
 import { animatedMove } from '../../utils/animatedStyles'
+import { responsivePixel } from '../../utils/responsivePixel'
 
 const CounterDisplay = ({ id, counterName, func, count }) => {
   // Center of the Counter
   const startingPosition = 0
-  // States for reactive coloring
-  const [deleting, setDeleting] = useState(false)
-  const [fastIncrement, setFastIncrement] = useState(false)
-  const [fastDecrement, setFastDecrement] = useState(false)
+  // State for reactive coloring
   const [reseting, setReseting] = useState(false)
   // Shared Values for the animation
   const x = useSharedValue(startingPosition)
   const y = useSharedValue(startingPosition)
   // Dynamic background that changes with the previos states
-  let backgroundColor = 'white'
+  let backgroundColor = '#FEF8EB' // Counter color
 
-  deleting ? backgroundColor = '#E55633'
-    : reseting ? backgroundColor = 'gray'
-      : null
+  reseting ? backgroundColor = '#F56960' : null
   // Animated styles for changing the position of the display
   const animatedStyles = animatedMove(x, y)
 
@@ -36,7 +31,6 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
     Vibration.vibrate(10)
     const newCount = count + 1
 
-    // (key, JSON.stringify({"counterName": key, "count": val}))
     AsyncStorage.setItem(id, JSON.stringify({ "counterName": counterName, "count": newCount }))
       .then(func(newCount))
       .catch(err => console.log(err))
@@ -69,27 +63,26 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
       // This change thr actual position of the display
       x.value = event.translationX
       y.value = event.translationY
+      // Limiting movement
+      y.value <= 0 ? y.value = 0
+        : y.value >= 65 ? y.value = 65 : y.value
+      x.value >= 60 ? x.value = 60
+        : x.value <= -60 ? x.value = -60 : x.value
       // Executing methods, and changing the previus states by position
 
-      if (y.value >= 65) y.value = 65
-      if (y.value >= 65 && x.value <= 50 && x.value >= -50) runOnJS(setDeleting)(true)
-      else runOnJS(setDeleting)(false)
-
-      if (y.value <= -65) y.value = -65
-      if (y.value <= -65 && x.value <= 50 && x.value >= -50) runOnJS(setReseting)(true)
+      if (y.value >= 65 && x.value <= 50 && x.value >= -50) runOnJS(setReseting)(true)
       else runOnJS(setReseting)(false)
+
     },
     onEnd: (event, ctx) => {
       // Verifies the last position when the display was released
       // in order to execute the corresponding methods and states
-      if (x.value > 0)  runOnJS(add)()
+      if (x.value > 0) runOnJS(add)()
       else if (x.value < 0) runOnJS(less)()
 
-      if (y.value <= -65 && x.value <= 50 && x.value >= -50) runOnJS(reset)()
-      else if (y.value >= 65 && x.value <= 50 && x.value >= -50) runOnJS(remove)()
+      if (y.value <= -65 && x.value <= 50 && x.value >= -50) runOnJS(remove)()
+      else if (y.value >= 65 && x.value <= 50 && x.value >= -50) runOnJS(reset)()
 
-      runOnJS(setFastIncrement)(false)
-      runOnJS(setFastDecrement)(false)
       runOnJS(setReseting)(false)
       // Restarting the display position
       x.value = withSpring(startingPosition, {
@@ -106,6 +99,7 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
       })
     }
   })
+
   return <View>
     <PanGestureHandler onGestureEvent={eventHandler}>
       <Animated.View style={[animatedStyles, styles.animatedContainer]}>
@@ -119,14 +113,37 @@ const styles = StyleSheet.create({
   animatedContainer: {
     flex: 1,
     alignItems: 'center',
-    maxWidth: 200,
-    marginLeft: 92,
-    marginTop: 10,
+    maxWidth: responsivePixel(200),
+    marginRight: responsivePixel(50),
+    backgroundColor: '#FCE3B0', // Color counter sides
+    paddingHorizontal: responsivePixel(20),
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
   counterDisplay: {
-    fontSize: 50,
-    paddingHorizontal: 20,
+    fontSize: responsivePixel(45),
+    paddingHorizontal: responsivePixel(35),
     borderRadius: 40,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   }
 })
 
