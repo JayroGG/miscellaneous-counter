@@ -1,12 +1,13 @@
 import React from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 import Counter from '../components/Counter/Counter'
 import withGestureList from '../HOCs/withGestureList'
 
-const CounterList = ({ counters }) => {
+const CounterList = ({ counters, style }) => {
 
   return (
     <FlatList
+      style={style}
       showsVerticalScrollIndicator={false}
       data={counters}
       renderItem={({ item: counter }) => {
@@ -27,5 +28,5 @@ const CounterList = ({ counters }) => {
   )
 }
 
-const GestureList = withGestureList(CounterList, 'Miscellaneous List')
+const GestureList = withGestureList(CounterList, 'TallyMate')
 export default GestureList
