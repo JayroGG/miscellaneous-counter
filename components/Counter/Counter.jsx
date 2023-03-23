@@ -34,7 +34,7 @@ const Counter = ({ id, counterName, value } = {}) => {
           {counterName.toUpperCase()}
         </TextInput>
         <View >
-          <CounterDisplay key={newName} id={id} counterName={newName} count={count} func={setCount} />
+          <CounterDisplay key={id} id={id} counterName={newName} count={count} func={setCount} />
         </View>
       </View>
     </GestureDetector>
