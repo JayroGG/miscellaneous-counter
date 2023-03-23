@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TextInput, Text, TouchableWithoutFeedback, Vibration } from 'react-native'
 import CounterDisplay from './CounterDisplay'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { responsivePixel } from '../../utils/responsivePixel'
 import { GestureDetector, Gesture } from 'react-native-gesture-handler'
 import { runOnJS } from 'react-native-reanimated'
 import { updateCounter } from '../../services/updateCounter'
+import { deleteCounter } from '../../services/deleteCounter'
 
 const Counter = ({ id, counterName, value } = {}) => {
   const [count, setCount] = useState(value)
   const [newName, setNewName] = useState(counterName)
   const [deleting, setDeleting] = useState(false)
-  
+
   if (count === null) {
     return null
   }
@@ -22,17 +22,10 @@ const Counter = ({ id, counterName, value } = {}) => {
     }
   })
 
-  const remove = () => {
-    Vibration.vibrate(10)
-    AsyncStorage.removeItem(id)
-      .then(() => setCount(null))
-      .catch(err => console.log(err))
-  }
-
   return (<View style={styles.container}>
     {deleting &&
-      <TouchableWithoutFeedback onPress={remove}>
-        <Text style={{fontSize: 30, backgroundColor: '#F56960', borderRadius: 10, alignContent: 'center'}}>X</Text>
+      <TouchableWithoutFeedback onPress={() => deleteCounter(id, setCount)}>
+        <Text style={{ fontSize: 30, backgroundColor: '#F56960', borderRadius: 10, textAlign: 'center' }}>X</Text>
       </TouchableWithoutFeedback>
     }
     <GestureDetector gesture={longPressGesture}>
@@ -89,8 +82,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsivePixel(10),
     backgroundColor: '#F8B225', // 'rgba(0, 0, 0, .8)' Background title
     color: '#fff',
-    minWidth: responsivePixel(140),
-    maxWidth: responsivePixel(200),
+    minWidth: responsivePixel(130),
+    maxWidth: responsivePixel(130),
     minHeight: 100,
     textAlign: 'center',
     borderWidth: .5,
