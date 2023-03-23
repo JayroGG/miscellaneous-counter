@@ -88,13 +88,13 @@ const CounterDisplay = ({ id, counterName, func, count }) => {
       x.value = withSpring(startingPosition, {
         damping: 10,
         mass: .5,
-        stiffness: 700,
+        stiffness: 300,
         overshootClamping: false,
       })
       y.value = withSpring(startingPosition, {
         damping: 10,
         mass: .5,
-        stiffness: 700,
+        stiffness: 300,
         overshootClamping: false,
       })
     }
