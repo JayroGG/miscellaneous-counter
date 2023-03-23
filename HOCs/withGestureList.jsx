@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 import Animated, { useSharedValue } from 'react-native-reanimated'
 import { PanGestureHandler } from 'react-native-gesture-handler'
-import { Link } from 'react-router-native'
 import { useCounters } from '../hooks/useCounters'
 import { animatedMove } from '../utils/animatedStyles'
 import { handleGesture } from '../utils/handleGesture'
@@ -21,19 +20,35 @@ const withGestureList = (Component, listTitle, direction) => {
       direction === 'row' && styles.row,
       direction === 'column' && styles.column,
     ]
-    
+
     return (
       <View style={flexStyles}>
         <Text style={styles.title}>{listTitle}</Text>
-        <Component counters={counters} style={styles.componentBackGround} />
+        <FlatList
+          style={styles.componentBackGround}
+          showsVerticalScrollIndicator={false}
+          data={counters}
+          renderItem={({ item: counter }) => {
+            const id = counter[0]
+            const value = JSON.parse(counter[1])
+            const name = value.counterName
+            const count = JSON.parse(value.count)
+            return (
+              <Component
+                id={id}
+                name={name}
+                count={count}
+              />
+            )
+          }}
+        />
         <PanGestureHandler onGestureEvent={handleSwipe}>
           <Animated.View style={animatedGesture}>
-            <Link to='/new' underlayColor='transparent'>
-              <Text style={styles.new}> + </Text>
-            </Link>
+            <Text style={styles.new}> + </Text>
           </Animated.View>
         </PanGestureHandler>
-      </View>)
+      </View>
+    )
   }
   return WrappedComponent
 

@@ -1,14 +1,20 @@
-import { NativeRouter, Route, Routes } from 'react-router-native'
 import Main from './pages/Main'
-import New from './pages/New'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { StyleSheet } from 'react-native'
+import Constants from 'expo-constants'
 
 export default function App() {
   return (
-    <NativeRouter>
-      <Routes>
-        <Route exact path='/' element={<Main />} />
-        <Route exact path='/new' element={<New />} />
-      </Routes>
-    </NativeRouter>
+    <GestureHandlerRootView style={styles.container}>
+      <Main />
+    </GestureHandlerRootView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F9F0F5', // '#5E97FF80' '#078B9C' #1B7288
+    paddingTop: Constants.statusBarHeight + 10,
+  },
+})

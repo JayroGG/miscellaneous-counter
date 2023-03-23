@@ -1,18 +1,16 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { Link } from 'react-router-native'
-import { useNavigate } from 'react-router-native'
 import { setCounter } from '../../services/setCounter'
 
 const Form = () => {
   const [name, setName] = useState('')
   const [value, setValue] = useState('')
-  const navigate = useNavigate()
 
   const handleSubmit = () => {
     
     // Saving in the storage
-    setCounter(name, value).then(()=>navigate('/'))
+    setCounter(name, value)
   }
 
   return <View style={styles.container}>

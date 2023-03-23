@@ -1,67 +1,40 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TextInput, Text, TouchableWithoutFeedback, Vibration } from 'react-native'
 import CounterDisplay from './CounterDisplay'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigate } from 'react-router-native'
 import { responsivePixel } from '../../utils/responsivePixel'
 import { GestureDetector, Gesture } from 'react-native-gesture-handler'
 import { runOnJS } from 'react-native-reanimated'
+import { updateCounter } from '../../services/updateCounter'
+import { deleteCounter } from '../../services/deleteCounter'
 
 const Counter = ({ id, counterName, value } = {}) => {
-  const [count, setCount] = useState(JSON.parse(value))
+  const [count, setCount] = useState(value)
   const [newName, setNewName] = useState(counterName)
-  const [deleting, setDeleting] = useState(false);
-  const navigate = useNavigate()
+  const [deleting, setDeleting] = useState(false)
+
   if (count === null) {
     return null
   }
 
-  const handleSubmit = async () => {
-    try {
-      await AsyncStorage.setItem(id, JSON.stringify({ "counterName": newName, "count": count }))
-      navigate('/')
-    } catch (error) {
-      console.error({ message: error })
-    }
-  }
   const longPressGesture = Gesture.LongPress().onEnd((e, success) => {
-    if (success && e.duration >= 600) {
+    if (success && e.duration >= 300) {
       runOnJS(setDeleting)(true)
-      // runOnJS(Alert.alert)("Delete item",
-      //   `Are you sure you want to delete the counter? ${newName}`,
-      //   [
-      //     {
-      //       text: "No",
-      //       style: "cancel",
-      //     },
-      //     {
-      //       text: "Yes",
-      //       onPress: () => console.log('deleted'),
-      //     },
-      //   ])
     }
   })
 
-  const remove = () => {
-    Vibration.vibrate(10)
-    AsyncStorage.removeItem(id)
-      .then(() => setCount(null))
-      .catch(err => console.log(err))
-  }
-
   return (<View style={styles.container}>
     {deleting &&
-      <TouchableWithoutFeedback onPress={remove}>
-        <Text style={{fontSize: 30, backgroundColor: '#F56960', borderRadius: 10, alignContent: 'center'}}>X</Text>
+      <TouchableWithoutFeedback onPress={() => deleteCounter(id, setCount)}>
+        <Text style={{ fontSize: 30, backgroundColor: '#F56960', borderRadius: 10, textAlign: 'center' }}>X</Text>
       </TouchableWithoutFeedback>
     }
     <GestureDetector gesture={longPressGesture}>
       <View style={styles.card}>
-        <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={handleSubmit}>
+        <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={() => updateCounter(id, newName, count)}>
           {counterName.toUpperCase()}
         </TextInput>
         <View >
-          <CounterDisplay key={newName} id={id} counterName={newName} count={count} func={setCount} />
+          <CounterDisplay key={id} id={id} counterName={newName} count={count} func={setCount} />
         </View>
       </View>
     </GestureDetector>
@@ -109,8 +82,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsivePixel(10),
     backgroundColor: '#F8B225', // 'rgba(0, 0, 0, .8)' Background title
     color: '#fff',
-    minWidth: responsivePixel(140),
-    maxWidth: responsivePixel(200),
+    minWidth: responsivePixel(130),
+    maxWidth: responsivePixel(130),
     minHeight: 100,
     textAlign: 'center',
     borderWidth: .5,
