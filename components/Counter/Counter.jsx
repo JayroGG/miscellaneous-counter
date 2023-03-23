@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { View, StyleSheet, TextInput, Text, TouchableWithoutFeedback, Vibration } from 'react-native'
 import CounterDisplay from './CounterDisplay'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigate } from 'react-router-native'
 import { responsivePixel } from '../../utils/responsivePixel'
 import { GestureDetector, Gesture } from 'react-native-gesture-handler'
 import { runOnJS } from 'react-native-reanimated'
@@ -10,8 +9,7 @@ import { runOnJS } from 'react-native-reanimated'
 const Counter = ({ id, counterName, value } = {}) => {
   const [count, setCount] = useState(JSON.parse(value))
   const [newName, setNewName] = useState(counterName)
-  const [deleting, setDeleting] = useState(false);
-  const navigate = useNavigate()
+  const [deleting, setDeleting] = useState(false)
   if (count === null) {
     return null
   }
@@ -19,7 +17,6 @@ const Counter = ({ id, counterName, value } = {}) => {
   const handleSubmit = async () => {
     try {
       await AsyncStorage.setItem(id, JSON.stringify({ "counterName": newName, "count": count }))
-      navigate('/')
     } catch (error) {
       console.error({ message: error })
     }

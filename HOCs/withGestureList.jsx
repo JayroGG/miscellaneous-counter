@@ -28,9 +28,7 @@ const withGestureList = (Component, listTitle, direction) => {
         <Component counters={counters} style={styles.componentBackGround} />
         <PanGestureHandler onGestureEvent={handleSwipe}>
           <Animated.View style={animatedGesture}>
-            <Link to='/new' underlayColor='transparent'>
               <Text style={styles.new}> + </Text>
-            </Link>
           </Animated.View>
         </PanGestureHandler>
       </View>)

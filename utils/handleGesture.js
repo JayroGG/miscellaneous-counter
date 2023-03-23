@@ -1,10 +1,8 @@
 import { Vibration } from 'react-native'
 import { setCounter } from '../services/setCounter'
 import { runOnJS, useAnimatedGestureHandler, withSpring } from 'react-native-reanimated'
-import { useNavigate } from 'react-router-native'
  
  export const handleGesture = (x, y) => {
-  const navigate = useNavigate()
 
   return useAnimatedGestureHandler({
     onStart: (event, ctx) => {
@@ -23,7 +21,6 @@ import { useNavigate } from 'react-router-native'
     onEnd: (event, ctx) => {
       if (y.value <= -100) {
         runOnJS(setCounter)() 
-        runOnJS(navigate)('/')
         runOnJS(Vibration.vibrate)(10)
       }
       
