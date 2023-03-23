@@ -5,37 +5,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { responsivePixel } from '../../utils/responsivePixel'
 import { GestureDetector, Gesture } from 'react-native-gesture-handler'
 import { runOnJS } from 'react-native-reanimated'
+import { updateCounter } from '../../services/updateCounter'
 
 const Counter = ({ id, counterName, value } = {}) => {
-  const [count, setCount] = useState(JSON.parse(value))
+  const [count, setCount] = useState(value)
   const [newName, setNewName] = useState(counterName)
   const [deleting, setDeleting] = useState(false)
+  
   if (count === null) {
     return null
   }
 
-  const handleSubmit = async () => {
-    try {
-      await AsyncStorage.setItem(id, JSON.stringify({ "counterName": newName, "count": count }))
-    } catch (error) {
-      console.error({ message: error })
-    }
-  }
   const longPressGesture = Gesture.LongPress().onEnd((e, success) => {
-    if (success && e.duration >= 600) {
+    if (success && e.duration >= 300) {
       runOnJS(setDeleting)(true)
-      // runOnJS(Alert.alert)("Delete item",
-      //   `Are you sure you want to delete the counter? ${newName}`,
-      //   [
-      //     {
-      //       text: "No",
-      //       style: "cancel",
-      //     },
-      //     {
-      //       text: "Yes",
-      //       onPress: () => console.log('deleted'),
-      //     },
-      //   ])
     }
   })
 
@@ -54,7 +37,7 @@ const Counter = ({ id, counterName, value } = {}) => {
     }
     <GestureDetector gesture={longPressGesture}>
       <View style={styles.card}>
-        <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={handleSubmit}>
+        <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={() => updateCounter(id, newName, count)}>
           {counterName.toUpperCase()}
         </TextInput>
         <View >
