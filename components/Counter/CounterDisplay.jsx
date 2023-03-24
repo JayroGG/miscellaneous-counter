@@ -114,9 +114,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     maxWidth: responsivePixel(200),
-    marginRight: responsivePixel(50),
+    marginRight: responsivePixel(45),
     backgroundColor: '#FCE3B0', // Color counter sides
-    paddingHorizontal: responsivePixel(20),
+    paddingHorizontal: responsivePixel(15),
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderBottomLeftRadius: 30,
@@ -132,8 +132,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   counterDisplay: {
+    textAlign: 'center',
     fontSize: responsivePixel(45),
-    paddingHorizontal: responsivePixel(35),
+    minWidth: responsivePixel(110),
     borderRadius: 40,
     shadowColor: "#000",
     shadowOffset: {
