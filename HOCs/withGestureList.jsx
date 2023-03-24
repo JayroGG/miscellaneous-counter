@@ -1,19 +1,20 @@
-import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, FlatList } from 'react-native'
 import Animated, { useSharedValue } from 'react-native-reanimated'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import { useCounters } from '../hooks/useCounters'
 import { animatedMove } from '../utils/animatedStyles'
-import { handleGesture } from '../utils/handleGesture'
+import { listHandleGesture } from '../utils/listHandleGesture'
+import { styles } from './withGestureListStyles'
 
 const withGestureList = (Component, listTitle, direction) => {
   const WrappedComponent = () => {
+    const [newCounter, setNewCounter] = useState(false)
     const x = useSharedValue(0)
     const y = useSharedValue(0)
     const animatedGesture = animatedMove(x, y)
-    const counters = useCounters()
-    const handleSwipe = handleGesture(x, y)
-
+    const counters = useCounters(setNewCounter, newCounter)
+    const handleSwipe = listHandleGesture(x, y, setNewCounter)
     const flexStyles = [
       styles.container,
       { backgroundColor: '#FEF1D8', borderRadius: 200 },
