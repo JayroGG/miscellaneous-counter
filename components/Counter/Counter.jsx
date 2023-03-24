@@ -1,44 +1,42 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TextInput, Text, TouchableWithoutFeedback, Vibration } from 'react-native'
+import { View, StyleSheet, TextInput } from 'react-native'
 import CounterDisplay from './CounterDisplay'
 import { responsivePixel } from '../../utils/responsivePixel'
-import { GestureDetector, Gesture } from 'react-native-gesture-handler'
-import { runOnJS } from 'react-native-reanimated'
 import { updateCounter } from '../../services/updateCounter'
-import { deleteCounter } from '../../services/deleteCounter'
+import { counterHandleGesture } from '../../utils/counterHandleGesture'
+import Animated, { useSharedValue } from 'react-native-reanimated'
+import { PanGestureHandler } from 'react-native-gesture-handler'
+import { animatedMove } from '../../utils/animatedStyles'
 
 const Counter = ({ id, counterName, value } = {}) => {
+  const x = useSharedValue(0)
+  const y = useSharedValue(0)
   const [count, setCount] = useState(value)
   const [newName, setNewName] = useState(counterName)
-  const [deleting, setDeleting] = useState(false)
+  const handleCounterSwipe = counterHandleGesture(x, id, setCount)
+  const animatedGesture = animatedMove(x)
 
   if (count === null) {
     return null
   }
 
-  const longPressGesture = Gesture.LongPress().onEnd((e, success) => {
-    if (success && e.duration >= 300) {
-      runOnJS(setDeleting)(true)
-    }
-  })
+  return (
+    <View style={styles.container}>
+      <PanGestureHandler onGestureEvent={handleCounterSwipe}>
+        <Animated.View style={animatedGesture}>
 
-  return (<View style={styles.container}>
-    {deleting &&
-      <TouchableWithoutFeedback onPress={() => deleteCounter(id, setCount)}>
-        <Text style={{ fontSize: 30, backgroundColor: '#F56960', borderRadius: 10, textAlign: 'center' }}>X</Text>
-      </TouchableWithoutFeedback>
-    }
-    <GestureDetector gesture={longPressGesture}>
-      <View style={styles.card}>
-        <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={() => updateCounter(id, newName, count)}>
-          {counterName.toUpperCase()}
-        </TextInput>
-        <View >
-          <CounterDisplay key={id} id={id} counterName={newName} count={count} func={setCount} />
-        </View>
-      </View>
-    </GestureDetector>
-  </View>
+          <View style={styles.card}>
+            <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={() => updateCounter(id, newName, count)}>
+              {counterName.toUpperCase()}
+            </TextInput>
+            <View >
+              <CounterDisplay key={id} id={id} counterName={newName} count={count} func={setCount} />
+            </View>
+          </View>
+
+        </Animated.View>
+      </PanGestureHandler>
+    </View>
   )
 }
 
@@ -46,7 +44,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: responsivePixel(10),
-    marginBottom: responsivePixel(30),
+    marginBottom: responsivePixel(40),
     minWidth: responsivePixel(340),
     // Shadow Tag
     borderTopLeftRadius: 10,
