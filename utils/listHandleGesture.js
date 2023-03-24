@@ -2,14 +2,14 @@ import { Vibration } from 'react-native'
 import { setCounter } from '../services/setCounter'
 import { runOnJS, useAnimatedGestureHandler, withSpring } from 'react-native-reanimated'
  
- export const handleGesture = (x, y) => {
+ export const listHandleGesture = (x, y, reload) => {
 
   return useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.startX = x.value
       ctx.startY = y.value
     },
-    onActive: (event, ctx) => {
+    onActive: (event) => {
       x.value = event.translationX
       y.value = event.translationY
 
@@ -18,10 +18,12 @@ import { runOnJS, useAnimatedGestureHandler, withSpring } from 'react-native-rea
       if (x.value < -100) x.value = -100
 
     },
-    onEnd: (event, ctx) => {
-      if (y.value <= -100) {
+    onEnd: () => {
+      if (y.value <= -100) { 
+        runOnJS(reload)(true)
         runOnJS(setCounter)() 
         runOnJS(Vibration.vibrate)(10)
+       
       }
       
       x.value = withSpring(0, {
