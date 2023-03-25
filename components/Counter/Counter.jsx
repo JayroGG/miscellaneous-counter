@@ -23,17 +23,13 @@ const Counter = ({ id, counterName, value } = {}) => {
   return (
     <View style={styles.container}>
       <PanGestureHandler onGestureEvent={handleCounterSwipe}>
-        <Animated.View style={animatedGesture}>
-
-          <View style={styles.card}>
-            <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={() => updateCounter(id, newName, count)}>
-              {counterName.toUpperCase()}
-            </TextInput>
-            <View >
-              <CounterDisplay key={id} id={id} counterName={newName} count={count} setCount={setCount} />
-            </View>
+        <Animated.View style={[animatedGesture, styles.card]}>
+          <TextInput style={styles.title} onChangeText={setNewName} onSubmitEditing={() => updateCounter(id, newName, count)}>
+            {counterName.toUpperCase()}
+          </TextInput>
+          <View>
+            <CounterDisplay key={id} id={id} counterName={newName} count={count} setCount={setCount} />
           </View>
-
         </Animated.View>
       </PanGestureHandler>
     </View>
